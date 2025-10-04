@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { CircleAlert as AlertCircle, RefreshCw } from 'lucide-react-native';
+// import { CircleAlert as AlertCircle, RefreshCw } from 'lucide-react-native';
 
 interface ErrorViewProps {
   message: string;
@@ -9,12 +9,12 @@ interface ErrorViewProps {
 export default function ErrorView({ message, onRetry }: ErrorViewProps) {
   return (
     <View style={styles.container}>
-      <AlertCircle size={48} color="#EF4444" />
+      {/* <AlertCircle size={48} color="#EF4444" /> */}
       <Text style={styles.title}>Oops! Something went wrong</Text>
       <Text style={styles.message}>{message}</Text>
       {onRetry && (
         <TouchableOpacity style={styles.retryButton} onPress={onRetry}>
-          <RefreshCw size={20} color="#FFFFFF" />
+          {/* <RefreshCw size={20} color="#FFFFFF" /> */}
           <Text style={styles.retryText}>Try Again</Text>
         </TouchableOpacity>
       )}

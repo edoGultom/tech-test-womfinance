@@ -1,4 +1,3 @@
-import { Inbox } from 'lucide-react-native';
 import { View, Text, StyleSheet } from 'react-native';
 
 interface EmptyStateProps {
@@ -8,7 +7,7 @@ interface EmptyStateProps {
 export default function EmptyState({ message = 'No data available' }: EmptyStateProps) {
   return (
     <View style={styles.container}>
-      <Inbox size={64} color="#9CA3AF" />
+      {/* <Inbox size={64} color="#9CA3AF" /> */}
       <Text style={styles.message}>{message}</Text>
     </View>
   );

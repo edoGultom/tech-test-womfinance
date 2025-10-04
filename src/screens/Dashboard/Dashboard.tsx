@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-export default function HomeScreen() {
+export default function DashboardScreen() {
   return (
     <View>
-      <Text>HomeScreen</Text>
+      <Text>Dashboard</Text>
     </View>
   )
 }

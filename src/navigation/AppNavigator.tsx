@@ -1,19 +1,27 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MainStack from './MainStack';
-import AuthStack from './AuthStack';
+import React, { useContext } from 'react';
+import { StyleSheet, View } from 'react-native';
+import LoadingSpinner from '../components/Loading';
+import { AuthContext } from '../context/AuthContext';
 import { RootStackParamList } from '../types/auth';
-import { getAuthToken } from '../utils/auth';
-
+import AuthStack from './AuthStack';
+import MainStack from './MainStack';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function AppNavigator() {
-  const token = getAuthToken();
+  const { token ,isLoading} = useContext(AuthContext);
 
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <LoadingSpinner />
+      </View>
+    );
+  }
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {token ? (
           <Stack.Screen name="Main" component={MainStack} />
@@ -24,3 +32,10 @@ export default function AppNavigator() {
     </NavigationContainer>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

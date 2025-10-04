@@ -1,15 +1,70 @@
-import { LogIn } from 'lucide-react-native';
-import React from 'react';
+// import { LogIn } from 'lucide-react-native';
+import { MaterialIcons } from '@react-native-vector-icons/material-icons';
+import React, { useContext, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
+import { AuthContext } from '../../context/AuthContext';
+import {
+  generateJWT,
+  validateEmail,
+  validatePassword
+} from '../../utils/auth';
 
 export default function LoginScreen() {
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useContext(AuthContext);
+
+  function validateInputs(): boolean {
+    let isValid = true;
+
+    if (!email.trim()) {
+      setEmailError('Email is required');
+      isValid = false;
+    } else if (!validateEmail(email)) {
+      setEmailError('Please enter a valid email address');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
+
+    if (!password.trim()) {
+      setPasswordError('Password is required');
+      isValid = false;
+    } else if (!validatePassword(password)) {
+      setPasswordError('Password must be at least 6 characters');
+      isValid = false;
+    } else {
+      setPasswordError('');
+    }
+
+    return isValid;
+  }
+  async function handleLogin() {
+    if (!validateInputs()) {
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const token = generateJWT(email);
+      login(token, email);
+    } catch (error) {
+      setPasswordError('Failed to login. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -21,10 +76,82 @@ export default function LoginScreen() {
       >
         <View style={styles.header}>
           <View style={styles.iconContainer}>
-            <LogIn size={48} color="#3B82F6" />
+            <MaterialIcons name="login" color="#3B82F6" size={48} />
           </View>
           <Text style={styles.title}>Welcome Back</Text>
           <Text style={styles.subtitle}>Sign in to continue</Text>
+        </View>
+
+        <View style={styles.form}>
+          {/* Email */}
+          <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
+              <MaterialIcons
+                name="mail"
+                color="#6B7280"
+                size={20}
+                style={styles.inputIcon}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                value={email}
+                onChangeText={text => {
+                  setEmail(text);
+                  if (emailError) setEmailError('');
+                }}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoComplete="email"
+                editable={!isLoading}
+              />
+            </View>
+          </View>
+          {/* Password */}
+          <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
+              <MaterialIcons
+                name="lock"
+                size={20}
+                color="#6B7280"
+                style={styles.inputIcon}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                value={password}
+                onChangeText={text => {
+                  setPassword(text);
+                  if (passwordError) setPasswordError('');
+                }}
+                secureTextEntry
+                autoCapitalize="none"
+                autoComplete="password"
+                editable={!isLoading}
+              />
+            </View>
+            {passwordError ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : null}
+          </View>
+          {/* Signin button */}
+          <TouchableOpacity
+            style={[
+              styles.loginButton,
+              isLoading && styles.loginButtonDisabled,
+            ]}
+            onPress={handleLogin}
+            disabled={isLoading}
+          >
+            <Text style={styles.loginButtonText}>
+              {isLoading ? 'Signing in...' : 'Sign In'}
+            </Text>
+          </TouchableOpacity>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoText}>
+              Demo: Use any email and password (min 6 characters)
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

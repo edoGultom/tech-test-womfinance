@@ -79,38 +79,39 @@ export function isTokenExpired(token: string): boolean {
     return decoded.exp < now;
 }
 
-export function saveAuthToken(token: string, email: string): void {
+export async function saveAuthToken(token: string, email: string): Promise<void> {
     try {
-        setItem(TOKEN_KEY, token);
-        setItem(USER_EMAIL_KEY, email);
+        await setItem(TOKEN_KEY, token);
+        await setItem(USER_EMAIL_KEY, email);
     } catch (error) {
         throw new Error('Failed to save authentication token');
     }
 }
-export function getAuthToken(): string | null {
+
+export async function getAuthToken(): Promise<string | null> {
     try {
-        const token = getItem(TOKEN_KEY);
+        const token = await getItem(TOKEN_KEY);
         if (token && !isTokenExpired(token)) {
             return token;
         }
-        clearAuthToken(); // kalau expired, hapus
+        await clearAuthToken();
         return null;
+    } catch (error) {
+        return null;
+    }
+}
+export async function getUserEmail(): Promise<string | null> {
+    try {
+        return await getItem(USER_EMAIL_KEY) ?? null;
     } catch (error) {
         return null;
     }
 }
 
-export function getUserEmail(): string | null {
+export async function clearAuthToken(): Promise<void> {
     try {
-        return getItem(USER_EMAIL_KEY) ?? null;
-    } catch (error) {
-        return null;
-    }
-}
-export function clearAuthToken(): void {
-    try {
-        removeItem(TOKEN_KEY);
-        removeItem(USER_EMAIL_KEY);
+        await removeItem(TOKEN_KEY);
+        await removeItem(USER_EMAIL_KEY);
     } catch (error) {
         throw new Error('Failed to clear authentication token');
     }
