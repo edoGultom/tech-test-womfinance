@@ -9,5 +9,6 @@ export type RootStackParamList = {
   
   export type MainStackParamList = {
     Dashboard: undefined;
+    Detail: { itemId: string }; 
   };
   
