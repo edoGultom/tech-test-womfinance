@@ -72,7 +72,7 @@ export default function DashboardScreen() {
     return <LoadingSpinner message="Loading users..." />;
   }
 
-  if (error && users===null) {
+  if (error && users?.length === 0) {
     return <ErrorView message={error} onRetry={refetch} />;
   }
   const styles = getStyles(theme);
@@ -121,8 +121,11 @@ export default function DashboardScreen() {
             tintColor="#3B82F6"
           />
         }
-        ListEmptyComponent={<EmptyState message="No users found" />}
+        // ListEmptyComponent={<EmptyState message="No users found" />}
       />
+      {!loading && users?.length === 0 && (
+      <EmptyState message="No users found" />
+    )}
     </SafeAreaView>
   );
 }
