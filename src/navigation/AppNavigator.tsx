@@ -16,7 +16,7 @@ export default function AppNavigator() {
   if (isLoading) {
     return (
       <View style={styles.container}>
-        <LoadingSpinner />
+        <LoadingSpinner message="Please wait..."/>
       </View>
     );
   }

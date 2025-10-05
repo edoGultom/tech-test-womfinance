@@ -6,7 +6,7 @@ export interface ApiError {
   statusCode?: number;
 }
 const BASE_URL = 'https://jsonplaceholder.typicode.com';
-const api = axios.create({
+const apiClient = axios.create({
   baseURL: BASE_URL, 
   timeout: 10000,
   headers: {
@@ -15,26 +15,31 @@ const api = axios.create({
 });
 
 // interceptor untuk inject token
-api.interceptors.request.use(
+apiClient.interceptors.request.use(
   (config) => {
     const token = getAuthToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log('Request:', config);
     return config;
   },
   (error) => Promise.reject(error)
 );
 
 //handle 401 
-api.interceptors.response.use(
-  (response) => response,
+apiClient.interceptors.response.use(
+  (response) => {
+    console.log('Response:', response);
+    return response;
+  },
   (error) => {
     if (error.response?.status === 401) {
       console.warn('Unauthorized, logging out...');
     }
+    console.log('Error:', error);
     return Promise.reject(error);
   }
 );
 
-export default api;
+export default apiClient;

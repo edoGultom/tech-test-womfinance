@@ -1,17 +1,25 @@
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  FlatList,
+  RefreshControl,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import ErrorView from '../../components/ErrorView';
+import LoadingSpinner from '../../components/Loading';
 import { AuthContext } from '../../context/AuthContext';
-import { clearAuthToken, getUserEmail } from '../../utils/auth';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useUsers } from '../../hooks/useUsers';
 import { MainStackParamList } from '../../types/auth';
+import { clearAuthToken, getUserEmail } from '../../utils/auth';
+import UserCard from '../../components/UserCard';
+import { User } from '../../types/user';
+import EmptyState from '../../components/EmptyState';
 
 type DashboardNavigationProp = NativeStackNavigationProp<
   MainStackParamList,
@@ -20,9 +28,16 @@ type DashboardNavigationProp = NativeStackNavigationProp<
 
 export default function DashboardScreen() {
   const [userEmail, setUserEmail] = useState('');
-  const [error, setError] = useState<string | null>(null);
   const { logout } = useContext(AuthContext);
   const navigation = useNavigation<DashboardNavigationProp>();
+  const {
+    data: users,
+    loading,
+    error,
+    isRefreshing,
+    refetch,
+    refresh,
+  } = useUsers(); //custom hook 
 
   useEffect(() => {
     loadUserData();
@@ -47,8 +62,17 @@ export default function DashboardScreen() {
       console.error('Error loading user data:', err);
     }
   }
-  async function handleDetail() {
-    navigation.navigate('Detail', { itemId: '123' }); // contoh param
+
+  function handleUserPress(user: User) {
+    navigation.navigate('Detail', { userId: user.id.toString() }); // contoh param
+  }
+
+  if (loading) {
+    return <LoadingSpinner message="Loading users..." />;
+  }
+
+  if (error && users === null) {
+    return <ErrorView message={error} onRetry={refetch} />;
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -71,7 +95,24 @@ export default function DashboardScreen() {
           <Text style={styles.errorBannerText}>{error}</Text>
         </View>
       )}
-      <TouchableOpacity onPress={handleDetail}><Text>Go Detail</Text></TouchableOpacity>
+
+      <FlatList
+        data={users??[]}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }) => (
+          <UserCard user={item} onPress={() => handleUserPress(item)} />
+        )}
+        contentContainerStyle={styles.listContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={refresh}
+            colors={['#3B82F6']}
+            tintColor="#3B82F6"
+          />
+        }
+        ListEmptyComponent={<EmptyState message="No users found" />}
+      />
     </SafeAreaView>
   );
 }
