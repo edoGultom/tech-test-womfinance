@@ -4,7 +4,7 @@ import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -13,12 +13,12 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MainStackParamList } from '../../types/auth';
-import UserCard from '../../components/UserCard';
-import { useUserDetail } from '../../hooks/useUserDetail';
-import LoadingSpinner from '../../components/Loading';
 import ErrorView from '../../components/ErrorView';
-import { useTheme } from '../../theme/ThemeContext';
+import LoadingSpinner from '../../components/Loading';
+import UserCard from '../../components/UserCard';
+import { AuthThemeContext } from '../../context/AuthThemeContext';
+import { useUserDetail } from '../../hooks/useUserDetail';
+import { MainStackParamList } from '../../types/auth';
 
 type Props = NativeStackScreenProps<MainStackParamList, 'Detail'>;
 
@@ -31,7 +31,7 @@ export default function DetailScreen({ route }: Props) {
   const { userId } = route.params || {};
   const { data: user, loading, error, refresh } = useUserDetail(userId);
   const navigation = useNavigation<ScreenNavigationProp>();
-  const { theme } = useTheme();
+  const {  theme } = useContext(AuthThemeContext);
   const styles = getStyles(theme);
 
   if (loading) {

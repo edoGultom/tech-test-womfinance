@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import LoadingSpinner from '../components/Loading';
-import { AuthContext } from '../context/AuthContext';
+import { AuthThemeContext } from '../context/AuthThemeContext';
 import { RootStackParamList } from '../types/auth';
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';
@@ -11,7 +11,7 @@ import MainStack from './MainStack';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function AppNavigator() {
-  const { token ,isLoading} = useContext(AuthContext);
+  const { token ,isLoading} = useContext(AuthThemeContext);
 
   if (isLoading) {
     return (

@@ -10,13 +10,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { AuthContext } from '../../context/AuthContext';
-import {
-  generateJWT,
-  validateEmail,
-  validatePassword
-} from '../../utils/auth';
-import { useTheme } from '../../theme/ThemeContext';
+import { generateJWT, validateEmail, validatePassword } from '../../utils/auth';
+import { AuthThemeContext } from '../../context/AuthThemeContext';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -24,8 +19,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useContext(AuthContext);
-  const { theme } = useTheme();
+  const { login, theme } = useContext(AuthThemeContext);
   const styles = getStyles(theme);
 
   function validateInputs(): boolean {
@@ -97,6 +91,7 @@ export default function LoginScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="Email"
+                placeholderTextColor={theme.textLabel}
                 value={email}
                 onChangeText={text => {
                   setEmail(text);
@@ -121,6 +116,7 @@ export default function LoginScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="Password"
+                placeholderTextColor={theme.textLabel}
                 value={password}
                 onChangeText={text => {
                   setPassword(text);
@@ -162,92 +158,92 @@ export default function LoginScreen() {
 
 const getStyles = (theme: any) =>
   StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.background,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    padding: 24,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  iconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: theme.bgIconPrimary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: '700',
-    color: theme.textName,
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: theme.textLabel,
-  },
-  form: {
-    width: '100%',
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: theme.borderColor,
-    paddingHorizontal: 16,
-  },
-  inputIcon: {
-    marginRight: 12,
-  },
-  input: {
-    flex: 1,
-    paddingVertical: 16,
-    fontSize: 16,
-    color: theme.textName,
-  },
-  errorText: {
-    marginTop: 6,
-    marginLeft: 4,
-    fontSize: 14,
-    color: '#EF4444',
-  },
-  loginButton: {
-    backgroundColor: theme.bgButton,
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  loginButtonDisabled: {
-    opacity: 0.6,
-  },
-  loginButtonText: {
-    color: theme.text,
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  infoContainer: {
-    marginTop: 24,
-    padding: 16,
-    backgroundColor: '#FEF3C7',
-    borderRadius: 12,
-  },
-  infoText: {
-    fontSize: 14,
-    color: '#92400E',
-    textAlign: 'center',
-  },
-});
+    container: {
+      flex: 1,
+      backgroundColor: theme.background,
+    },
+    scrollContent: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      padding: 24,
+    },
+    header: {
+      alignItems: 'center',
+      marginBottom: 40,
+    },
+    iconContainer: {
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      backgroundColor: theme.bgIconPrimary,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    title: {
+      fontSize: 32,
+      fontWeight: '700',
+      color: theme.textName,
+      marginBottom: 8,
+    },
+    subtitle: {
+      fontSize: 16,
+      color: theme.textLabel,
+    },
+    form: {
+      width: '100%',
+    },
+    inputContainer: {
+      marginBottom: 20,
+    },
+    inputWrapper: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor:theme.background,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: theme.borderColor,
+      paddingHorizontal: 16,
+    },
+    inputIcon: {
+      marginRight: 12,
+    },
+    input: {
+      flex: 1,
+      paddingVertical: 16,
+      fontSize: 16,
+      color: theme.text,
+    },
+    errorText: {
+      marginTop: 6,
+      marginLeft: 4,
+      fontSize: 14,
+      color: '#EF4444',
+    },
+    loginButton: {
+      backgroundColor: theme.bgButton,
+      paddingVertical: 16,
+      borderRadius: 12,
+      alignItems: 'center',
+      marginTop: 8,
+    },
+    loginButtonDisabled: {
+      opacity: 0.6,
+    },
+    loginButtonText: {
+      color: theme.text,
+      fontSize: 18,
+      fontWeight: '600',
+    },
+    infoContainer: {
+      marginTop: 24,
+      padding: 16,
+      backgroundColor: '#FEF3C7',
+      borderRadius: 12,
+    },
+    infoText: {
+      fontSize: 14,
+      color: '#92400E',
+      textAlign: 'center',
+    },
+  });

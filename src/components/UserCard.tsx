@@ -1,7 +1,8 @@
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { User } from '../types/user';
-import { useTheme } from '../theme/ThemeContext';
+import { useContext } from 'react';
+import { AuthThemeContext } from '../context/AuthThemeContext';
 
 interface UserCardProps {
   user: User;
@@ -9,7 +10,8 @@ interface UserCardProps {
 }
 
 export default function UserCard({ user, onPress }: UserCardProps) {
-  const { theme } = useTheme();
+  const {  theme } = useContext(AuthThemeContext);
+
   const styles = getStyles(theme);
 
   const CardContent = (

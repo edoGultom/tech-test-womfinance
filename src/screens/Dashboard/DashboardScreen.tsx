@@ -15,12 +15,11 @@ import EmptyState from '../../components/EmptyState';
 import ErrorView from '../../components/ErrorView';
 import LoadingSpinner from '../../components/Loading';
 import UserCard from '../../components/UserCard';
-import { AuthContext } from '../../context/AuthContext';
 import { useUsers } from '../../hooks/useUsers';
-import { useTheme } from '../../theme/ThemeContext';
 import { MainStackParamList } from '../../types/auth';
 import { User } from '../../types/user';
 import { clearAuthToken, getUserEmail } from '../../utils/auth';
+import { AuthThemeContext } from '../../context/AuthThemeContext';
 
 type DashboardNavigationProp = NativeStackNavigationProp<
   MainStackParamList,
@@ -29,9 +28,8 @@ type DashboardNavigationProp = NativeStackNavigationProp<
 
 export default function DashboardScreen() {
   const [userEmail, setUserEmail] = useState('');
-  const { logout } = useContext(AuthContext);
+  const { logout, theme, toggleTheme, mode } = useContext(AuthThemeContext);
   const navigation = useNavigation<DashboardNavigationProp>();
-  const { theme, toggleTheme, mode } = useTheme();
 
   const {
     data: users,
@@ -194,7 +192,6 @@ const getStyles = (theme: any) =>
       borderRadius: 24,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor:
-        theme.bgIconPrimary,
+      backgroundColor: theme.bgIconPrimary,
     },
   });
