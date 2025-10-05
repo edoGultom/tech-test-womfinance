@@ -74,7 +74,7 @@ export default function DashboardScreen() {
     return <LoadingSpinner message="Loading users..." />;
   }
 
-  if (error && users === null) {
+  if (error && !users) {
     return <ErrorView message={error} onRetry={refetch} />;
   }
   const styles = getStyles(theme);
