@@ -16,6 +16,7 @@ import {
   validateEmail,
   validatePassword
 } from '../../utils/auth';
+import { useTheme } from '../../theme/ThemeContext';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -24,6 +25,8 @@ export default function LoginScreen() {
   const [passwordError, setPasswordError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useContext(AuthContext);
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   function validateInputs(): boolean {
     let isValid = true;
@@ -157,10 +160,11 @@ export default function LoginScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const getStyles = (theme: any) =>
+  StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: theme.background,
   },
   scrollContent: {
     flexGrow: 1,
@@ -175,7 +179,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: theme.bgIconPrimary,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
@@ -183,12 +187,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: '700',
-    color: '#111827',
+    color: theme.textName,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: '#6B7280',
+    color: theme.textLabel,
   },
   form: {
     width: '100%',
@@ -199,10 +203,10 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#fff',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: theme.borderColor,
     paddingHorizontal: 16,
   },
   inputIcon: {
@@ -212,7 +216,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 16,
     fontSize: 16,
-    color: '#111827',
+    color: theme.textName,
   },
   errorText: {
     marginTop: 6,
@@ -221,7 +225,7 @@ const styles = StyleSheet.create({
     color: '#EF4444',
   },
   loginButton: {
-    backgroundColor: '#3B82F6',
+    backgroundColor: theme.bgButton,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -231,7 +235,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   loginButtonText: {
-    color: '#FFFFFF',
+    color: theme.text,
     fontSize: 18,
     fontWeight: '600',
   },

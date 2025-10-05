@@ -11,15 +11,16 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import EmptyState from '../../components/EmptyState';
 import ErrorView from '../../components/ErrorView';
 import LoadingSpinner from '../../components/Loading';
+import UserCard from '../../components/UserCard';
 import { AuthContext } from '../../context/AuthContext';
 import { useUsers } from '../../hooks/useUsers';
+import { useTheme } from '../../theme/ThemeContext';
 import { MainStackParamList } from '../../types/auth';
-import { clearAuthToken, getUserEmail } from '../../utils/auth';
-import UserCard from '../../components/UserCard';
 import { User } from '../../types/user';
-import EmptyState from '../../components/EmptyState';
+import { clearAuthToken, getUserEmail } from '../../utils/auth';
 
 type DashboardNavigationProp = NativeStackNavigationProp<
   MainStackParamList,
@@ -30,6 +31,8 @@ export default function DashboardScreen() {
   const [userEmail, setUserEmail] = useState('');
   const { logout } = useContext(AuthContext);
   const navigation = useNavigation<DashboardNavigationProp>();
+  const { theme, toggleTheme, mode } = useTheme();
+
   const {
     data: users,
     loading,
@@ -74,6 +77,8 @@ export default function DashboardScreen() {
   if (error && users === null) {
     return <ErrorView message={error} onRetry={refetch} />;
   }
+  const styles = getStyles(theme);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -88,6 +93,13 @@ export default function DashboardScreen() {
         </View>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <MaterialIcons name="logout" color="#EF4444" size={24} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconButton} onPress={toggleTheme}>
+          {mode === 'light' ? (
+            <MaterialIcons name="dark-mode" color={theme.text} size={32} />
+          ) : (
+            <MaterialIcons name="light-mode" color={theme.text} size={32} />
+          )}
         </TouchableOpacity>
       </View>
       {error && (
@@ -116,63 +128,73 @@ export default function DashboardScreen() {
     </SafeAreaView>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  userIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#EFF6FF',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  welcomeText: {
-    fontSize: 14,
-    color: '#6B7280',
-  },
-  emailText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#111827',
-  },
-  logoutButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#FEE2E2',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  errorBanner: {
-    backgroundColor: '#FEE2E2',
-    padding: 12,
-    marginHorizontal: 16,
-    marginTop: 12,
-    borderRadius: 8,
-  },
-  errorBannerText: {
-    color: '#991B1B',
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  listContent: {
-    padding: 16,
-  },
-});
+const getStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.background,
+    },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: 16,
+      backgroundColor: theme.background,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.borderColor,
+    },
+    headerLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 12,
+    },
+    userIconContainer: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      backgroundColor: theme.bgIconPrimary,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    welcomeText: {
+      fontSize: 14,
+      color: theme.textLabel,
+    },
+    emailText: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: theme.text,
+    },
+    logoutButton: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      backgroundColor: theme.bgIconDanger,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    errorBanner: {
+      backgroundColor: theme.bgIconDanger,
+      padding: 12,
+      marginHorizontal: 16,
+      marginTop: 12,
+      borderRadius: 8,
+    },
+    errorBannerText: {
+      color: theme.mode === 'light' ? '#991B1B' : '#FCA5A5',
+      fontSize: 14,
+      textAlign: 'center',
+    },
+    listContent: {
+      padding: 16,
+    },
+    iconButton: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor:
+        theme.mode === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)',
+    },
+  });

@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { User } from '../types/user';
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { User } from '../types/user';
+import { useTheme } from '../theme/ThemeContext';
 
 interface UserCardProps {
   user: User;
@@ -8,6 +9,9 @@ interface UserCardProps {
 }
 
 export default function UserCard({ user, onPress }: UserCardProps) {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
+
   const CardContent = (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -49,57 +53,59 @@ export default function UserCard({ user, onPress }: UserCardProps) {
 
   return CardContent;
 }
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#EFF6FF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  headerText: {
-    flex: 1,
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#111827',
-    marginBottom: 2,
-  },
-  username: {
-    fontSize: 14,
-    color: '#6B7280',
-  },
-  infoContainer: {
-    gap: 8,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  infoText: {
-    fontSize: 14,
-    color: '#374151',
-    flex: 1,
-  },
-});
+const getStyles = (theme: any) =>
+  StyleSheet.create({
+    card: {
+      backgroundColor: theme.background,
+      borderRadius: 12,
+      padding: 16,
+      marginBottom: 12,
+      shadowColor: theme.shadowPrimary,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: theme.shadowOpacity,
+      shadowRadius: 4,
+      borderWidth: 1,
+      borderColor: theme.borderColor,
+      elevation: 3,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    iconContainer: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      backgroundColor: theme.bgIconPrimary,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 12,
+    },
+    headerText: {
+      flex: 1,
+    },
+    name: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: theme.textName,
+      marginBottom: 2,
+    },
+    username: {
+      fontSize: 14,
+      color: theme.textUsername,
+    },
+    infoContainer: {
+      gap: 8,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    infoText: {
+      fontSize: 14,
+      color: theme.textInfo,
+      flex: 1,
+    },
+  });

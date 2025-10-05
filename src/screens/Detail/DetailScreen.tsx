@@ -18,6 +18,7 @@ import UserCard from '../../components/UserCard';
 import { useUserDetail } from '../../hooks/useUserDetail';
 import LoadingSpinner from '../../components/Loading';
 import ErrorView from '../../components/ErrorView';
+import { useTheme } from '../../theme/ThemeContext';
 
 type Props = NativeStackScreenProps<MainStackParamList, 'Detail'>;
 
@@ -30,6 +31,8 @@ export default function DetailScreen({ route }: Props) {
   const { userId } = route.params || {};
   const { data: user, loading, error, refresh } = useUserDetail(userId);
   const navigation = useNavigation<ScreenNavigationProp>();
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   if (loading) {
     return <LoadingSpinner message="Loading user details..." />;
@@ -44,7 +47,7 @@ export default function DetailScreen({ route }: Props) {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <MaterialIcons name="arrow-back" color="#111827" size={24} />
+          <MaterialIcons name="arrow-back" color={theme.primary} size={24} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>User Details</Text>
         <View style={styles.headerSpacer} />
@@ -125,78 +128,81 @@ export default function DetailScreen({ route }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#F3F4F6',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#111827',
-  },
-  headerSpacer: {
-    width: 40,
-  },
-  content: {
-    padding: 16,
-  },
-  cardContainer: {
-    marginBottom: 24,
-  },
-  section: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#111827',
-    marginBottom: 12,
-  },
-  detailCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    gap: 16,
-  },
-  detailRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
-  },
-  detailContent: {
-    flex: 1,
-  },
-  detailLabel: {
-    fontSize: 14,
-    color: '#6B7280',
-    marginBottom: 2,
-  },
-  detailValue: {
-    fontSize: 16,
-    color: '#111827',
-    fontWeight: '500',
-  },
-});
+const getStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.background,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: 16,
+      backgroundColor: theme.background,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.borderColor,
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: theme.bgIconPrimary,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    headerTitle: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: theme.text,
+    },
+    headerSpacer: {
+      width: 40,
+    },
+    content: {
+      padding: 16,
+    },
+    cardContainer: {
+      marginBottom: 24,
+    },
+    section: {
+      marginBottom: 24,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: theme.textName,
+      marginBottom: 12,
+    },
+    detailCard: {
+      backgroundColor: theme.background,
+      borderRadius: 12,
+      padding: 16,
+      shadowColor: theme.shadowPrimary,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: theme.shadowOpacity,
+      shadowRadius: 4,
+      elevation: 3,
+      gap: 16,
+      borderWidth: 1,
+      borderColor: theme.borderColor,
+    },
+    detailRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 12,
+    },
+    detailContent: {
+      flex: 1,
+    },
+    detailLabel: {
+      fontSize: 14,
+      color: theme.textLabel,
+      marginBottom: 2,
+    },
+    detailValue: {
+      fontSize: 16,
+      color:theme.textName,
+      fontWeight: '500',
+    },
+  });
