@@ -72,7 +72,7 @@ export default function DashboardScreen() {
     return <LoadingSpinner message="Loading users..." />;
   }
 
-  if (error && !users) {
+  if (error && users===null) {
     return <ErrorView message={error} onRetry={refetch} />;
   }
   const styles = getStyles(theme);
@@ -107,7 +107,7 @@ export default function DashboardScreen() {
       )}
 
       <FlatList
-        data={users ?? []}
+        data={users }
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <UserCard user={item} onPress={() => handleUserPress(item)} />

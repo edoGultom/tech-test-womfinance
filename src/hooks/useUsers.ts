@@ -12,7 +12,7 @@ interface UseUsersResult {
 }
 
 export function useUsers(): UseUsersResult {
-    const [data, setData] = useState<User[]>([]);
+    const [data, setData] = useState<User[]|null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
