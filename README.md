@@ -69,8 +69,6 @@ npm run ios
 2. Enter password (minimum 6 characters)
 3. Click "Sign In"
 
-The app generates a JWT token that expires in 1 hour.
-
 ## API Endpoints
 
 - **Base URL**: https://jsonplaceholder.typicode.com
