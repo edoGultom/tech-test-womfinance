@@ -1,13 +1,16 @@
+import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import { View, Text, StyleSheet } from 'react-native';
 
 interface EmptyStateProps {
   message?: string;
 }
 
-export default function EmptyState({ message = 'No data available' }: EmptyStateProps) {
+export default function EmptyState({
+  message = 'No data available',
+}: EmptyStateProps) {
   return (
     <View style={styles.container}>
-      {/* <Inbox size={64} color="#9CA3AF" /> */}
+      <MaterialIcons name="inbox" color="#9CA3AF" size={64} />
       <Text style={styles.message}>{message}</Text>
     </View>
   );

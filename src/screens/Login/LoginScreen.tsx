@@ -1,4 +1,3 @@
-// import { LogIn } from 'lucide-react-native';
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import React, { useContext, useState } from 'react';
 import {

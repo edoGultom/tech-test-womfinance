@@ -8,7 +8,7 @@ const USER_EMAIL_KEY = 'user_email';
 export interface AuthToken {
     email: string;
     exp: number;
-    iat: number;
+    timestamp: number;
 }
 
 function base64Encode(str: string): string {
@@ -44,7 +44,7 @@ export function generateJWT(email: string): string {
     const now = Math.floor(Date.now() / 1000);
     const payload: AuthToken = {
         email,
-        iat: now,
+        timestamp: now,
         exp: now + 3600,
     };
 

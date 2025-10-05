@@ -34,7 +34,6 @@ export default function DetailScreen({ route }: Props) {
   if (loading) {
     return <LoadingSpinner message="Loading user details..." />;
   }
-
   if (error || !user) {
     return <ErrorView message={error || 'User not found'} onRetry={refresh} />;
   }

@@ -37,7 +37,7 @@ export default function DashboardScreen() {
     isRefreshing,
     refetch,
     refresh,
-  } = useUsers(); //custom hook 
+  } = useUsers(); //custom hook
 
   useEffect(() => {
     loadUserData();
@@ -97,7 +97,7 @@ export default function DashboardScreen() {
       )}
 
       <FlatList
-        data={users??[]}
+        data={users ?? []}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <UserCard user={item} onPress={() => handleUserPress(item)} />
