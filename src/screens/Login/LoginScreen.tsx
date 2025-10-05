@@ -103,6 +103,9 @@ export default function LoginScreen() {
                 editable={!isLoading}
               />
             </View>
+            {emailError ? (
+              <Text style={styles.errorText}>{emailError}</Text>
+            ) : null}
           </View>
           {/* Password */}
           <View style={styles.inputContainer}>
